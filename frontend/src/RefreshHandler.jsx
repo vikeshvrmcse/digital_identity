@@ -11,9 +11,8 @@ const RefreshHandler = ({ setIsAuthenticated }) => {
         if (token) {
             setIsAuthenticated(true);
         } else {
-            // Redirect unauthenticated users trying to access protected routes
             if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
-                navigate("/notfound", { replace: true });
+                navigate("*", { replace: true });
             }
         }
     }, [location.pathname, navigate, setIsAuthenticated]);
