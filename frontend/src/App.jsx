@@ -42,6 +42,7 @@ function App() {
           <Route path="/quizes/edit/:quizId" element={<QuizEdit />} />
           <Route path="/blogs/view/:blogId" element={<BlogViewEdit />} />
           <Route path="/blogs/edit/:blogId" element={<BlogViewEdit />} />
+          <Route path="/notfound" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         

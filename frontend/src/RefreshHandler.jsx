@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const RefreshHandler = ({ setIsAuthenticated }) => {
-    const location = useLocation();
-    const navigate = useNavigate();
+const PrivateRouting = ({ element }) => {
+    const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -11,13 +11,15 @@ const RefreshHandler = ({ setIsAuthenticated }) => {
         if (token) {
             setIsAuthenticated(true);
         } else {
-            if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
-                navigate("*", { replace: true });
-            }
+            setIsAuthenticated(false);
         }
-    }, [location.pathname, navigate, setIsAuthenticated]);
+        
+        setLoading(false);
+    }, []);
 
-    return null;
+    if (loading) return <p>Loading...</p>;
+
+    return isAuthenticated ? element : <Navigate to="/" />;
 };
 
-export default RefreshHandler;
+export default PrivateRouting;
