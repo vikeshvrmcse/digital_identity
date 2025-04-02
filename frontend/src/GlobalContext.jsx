@@ -1,11 +1,8 @@
 import { createContext, useState } from "react";
 
-// Create Context
 export const AppContext = createContext();
-
-// Create Provider Component
 export const ContextProvider = ({ children }) => {
-    const [val, setVal] = useState(false); // false = Light, true = Dark
+    const [val, setVal] = useState(false); 
 
     const toggleTheme = () => {
         setVal((prevTheme) => !prevTheme);

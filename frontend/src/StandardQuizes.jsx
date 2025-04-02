@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Card, CardMedia, TextField, Typography, Stepper, Step, StepLabel, Select, MenuItem, FormControl, InputLabel, CardContent, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 const steps = ["Quiz Details", "Add Questions", "Review & Submit"];
 import { styled } from '@mui/material/styles';
+import { ToastContainer } from "react-toastify";
+import axios from 'axios'
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+import { handleSuccess, handleError } from "./Utils";
 const StandardQuizes = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [choose, setChoose] = useState(0)
+  const [token, setToken] = useState('')
+  
   const [quizData, setQuizData] = useState({
+    userId: "",
     title: "",
     description: "",
     category: "",
@@ -19,17 +26,24 @@ const StandardQuizes = () => {
         options: ["", "", "", ""],
         correctAnswer: "",
         explanation: "",
-        timeLimit: "", // ⏳ New: Individual time limit for each question
+        timeLimit: "",
       },
     ],
   });
 
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    setToken(localStorage.getItem('token'))
+    if (storedUserId) {
+      setQuizData((prev) => ({ ...prev, userId: storedUserId }));
+    }
+  }, []);
 
 
-  // Handle input changes
   const handleChange = (e) => {
-    setQuizData({ ...quizData, [e.target.name]: e.target.value });
+    setQuizData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
 
   const handleImageUpload = (index, event) => {
     const file = event.target.files[0];
@@ -42,41 +56,57 @@ const StandardQuizes = () => {
     }
   };
 
-  // Handle question input changes
   const handleQuestionChange = (index, field, value) => {
-    const updatedQuestions = [...quizData.questions];
-    updatedQuestions[index][field] = value;
-    setQuizData({ ...quizData, questions: updatedQuestions });
-  };
-
-  // Handle adding more questions
-  const addNewQuestion = () => {
-    setQuizData({
-      ...quizData,
-      questions: [
-        ...quizData.questions,
-        { questionText: "", options: ["", "", "", ""], correctAnswer: "", explanation: "", timeLimit: "", image: "" },
-      ],
+    setQuizData((prev) => {
+      const updatedQuestions = [...prev.questions];
+      updatedQuestions[index][field] = value;
+      return { ...prev, questions: updatedQuestions };
     });
   };
 
-  // Handle next & previous steps
-  const handleNext = () => {
-    setActiveStep((prevStep) => prevStep + 1);
+
+  const addNewQuestion = () => {
+    setQuizData((prev) => ({
+      ...prev,
+      questions: [
+        ...prev.questions,
+        { questionText: "", options: ["", "", "", ""], correctAnswer: "", explanation: "", timeLimit: "", image: "" },
+      ],
+    }));
   };
 
-  const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1);
+
+  const handleNext = () => setActiveStep((prev) => prev + 1);
+  const handleBack = () => setActiveStep((prev) => prev - 1);
+
+
+  const handleSubmit = async () => {
+    console.log("Submitting Quiz Data:", quizData);
+
+    if (!token) {
+      console.error("User is not authenticated");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API_URL}/quizzes/create_quizzes`, quizData, {
+        headers: { Authorization: `${token}` },
+      });
+      handleSuccess("Quiz saved successfully")
+      console.log("Quiz saved successfully:", response.data);
+      
+    } catch (error) {
+      handleError("Error saving quiz:"+ `${error.response ? error.response.data : error.message}`)
+      
+    }
   };
 
-  // Handle submission
-  const handleSubmit = () => {
-    console.log("Submitted Quiz Data:", quizData);
-    setActiveStep(activeStep + 1);
-  };
-
+  
+  
   return (
+    
     <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
+      {<ToastContainer/>}
       <Stack sx={{ mt: 2, p: 2, backgroundColor: '#113946' }} mb={5}>
         <Typography variant="h4" color="secondary" align="center">Save Quizes Details</Typography>
       </Stack>
@@ -89,7 +119,7 @@ const StandardQuizes = () => {
         ))}
       </Stepper>
 
-      {/* Step 1: Quiz Details */}
+      
       {activeStep === 0 && (
         <Box>
           <TextField fullWidth label="Quiz Title" name="title" value={quizData.title} onChange={handleChange} sx={{ mb: 2 }} />
@@ -97,7 +127,7 @@ const StandardQuizes = () => {
 
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>Category</InputLabel>
-            <Select name="category" value={quizData.category} onChange={handleChange}>
+            <Select name="category" label="Category" value={quizData.category} onChange={handleChange}>
               <MenuItem value="Technology">Technology</MenuItem>
               <MenuItem value="Science">Science</MenuItem>
               <MenuItem value="Business">Business</MenuItem>
@@ -106,7 +136,7 @@ const StandardQuizes = () => {
 
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel>Difficulty Level</InputLabel>
-            <Select name="difficulty" value={quizData.difficulty} onChange={handleChange}>
+            <Select name="difficulty" label="Difficulty Level" value={quizData.difficulty} onChange={handleChange}>
               <MenuItem value="Easy">Easy</MenuItem>
               <MenuItem value="Medium">Medium</MenuItem>
               <MenuItem value="Hard">Hard</MenuItem>

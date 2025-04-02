@@ -3,14 +3,17 @@ import { Box, Button, Card, CardContent, CardHeader, Grid, Stack, TextField } fr
 import { useForm } from 'react-hook-form';
 import Footer from './Footer';
 import { AppContext } from './GlobalContext';
-
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from "react-toastify";
+import { handleSuccess, handleError } from "./Utils";
+import axios from "axios";
 
 export default function Signup() {
     const { val, toggleTheme } = useContext(AppContext);
     const [condition, setCondition] = useState('');
     const [state, setState] = useState(false);
     const API_URL = import.meta.env.VITE_BACKEND_URL;
-
+    const navigate=useNavigate();
     const {
         register,
         handleSubmit,
@@ -18,21 +21,81 @@ export default function Signup() {
         reset
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = async(data) => {
         if (condition === 'Login') {
-            toggleTheme();
-            reset();
-        }
-        alert(JSON.stringify(data, null, 2));
-    };
 
-    fetch(`${API_URL}/api/data`)
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error("Error:", error));
+            const { name, ...loginData } = data;
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(loginData),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to login data");
+                }
+
+                const result = await response.json();
+                console.log(result)
+
+                if (result.success) {
+                    const token = result.jwtToken; 
+                    
+                    localStorage.setItem("token", token);
+              
+                    
+                    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+                    
+                    const userId = decodedToken.userId; 
+                    
+                    
+              
+                    localStorage.setItem("userId", userId);
+                    localStorage.setItem("email", result.email);
+                    localStorage.setItem("name", result.name); 
+              
+                    console.log("Login successful! User ID:", userId);
+                    handleSuccess(result.userId)
+                    toggleTheme();
+                    reset();
+                    navigate('/')
+                  }  
+              } catch (error) {
+                handleError("Something error..."+error)
+                reset();
+              }
+        }else{
+
+            try {
+                const response = await fetch(`${API_URL}/auth/signup`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                });
+          
+                if (!response.ok) {
+                  throw new Error("Failed to signup data");
+                }
+          
+                const result = await response.json();
+                handleSuccess(result.message);
+                reset();
+              } catch (error) {
+                handleError("Something error..."+error)
+                reset();
+              }
+        }
+    };
 
     return (
         <>
+        {<ToastContainer/>}
             <Stack
                 justifyContent="center"
                 alignItems="center"
@@ -155,7 +218,6 @@ export default function Signup() {
                     </form>
                 </Box>
             </Stack>
-
             <Footer />
         </>
     );

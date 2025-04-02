@@ -1,8 +1,8 @@
 const ensureAuthentication=require('../Middlewares/auth')
-const router = require('express').Router()
+const productRouter = require('express').Router()
 
 try{
-    router.get('/',ensureAuthentication, (req, res)=>{
+    productRouter.get('/',ensureAuthentication, (req, res)=>{
         res.status(200).json([{
             name:"mobile",
             price:10000
@@ -18,4 +18,4 @@ try{
     res.send(e)
 }
 
-module.exports=router
+module.exports=productRouter

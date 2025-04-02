@@ -158,14 +158,14 @@ export default function Home() {
                     spacing={3}
                     justifyContent="center"
                     alignItems={'center'}
-                    mb={3} // Ensures all cards have the same height
+                    mb={3}
                 >
                     {testimonials.map((testimonial, index) => (
                         <Grid
                             item
                             xs={12} sm={6} md={3}
                             key={index}
-                            sx={{display:'flex', justifyContent: "center" }} // Centers on xs screens
+                            sx={{display:'flex', justifyContent: "center" }}
                         >
                             <Card sx={{ width: 300, height: "100%", display: "flex", flexDirection: "column" }}>
                                 <Avatar src={testimonial.avatar} sx={{ width: 56, height: 56, margin: "auto", mt: 2 }} />

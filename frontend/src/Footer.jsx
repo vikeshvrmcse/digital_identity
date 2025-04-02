@@ -33,18 +33,18 @@ const Footer = () => {
             <Button color="inherit" onClick={()=>navigate('/')}>Home</Button><br />
             <Button color="inherit" onClick={()=>navigate('/signup')}>Login</Button><br />
             <Button color="inherit" onClick={()=>navigate('/')} >Blogs</Button><br />
-            <Button color="inherit" onClick={()=>navigate('/quize')}>Resume</Button><br />
+            <Button color="inherit" onClick={()=>navigate('/contact')}>Resume</Button><br />
             <Button color="inherit" onClick={()=>navigate('/about')}>Contact</Button>
           </Grid>
 
           <Grid item xs={12} sm={4}>
             <Stack direction={'column'}>
               <Typography variant="h6" >Contact Us</Typography>
-              <Button variant="outline" startIcon={<MailIcon/>} href="###vikeshkm@gmail.com">Email</Button>
-              <Button variant="outline" startIcon={<PhoneInTalkIcon/>} href="###+91 9565649703##">Phone</Button>
-              <Button variant="outline" startIcon={<GitHubIcon/>} href="###https://github.com/vikeshvrmcse">Github</Button>
-              <Button variant="outline" startIcon={<LinkedInIcon/>} href="###https://www.linkedin.com/in/vikesh-kumar-verma-691a45218/">Linkdin</Button>
-              <Button variant="outline" startIcon={<Avatar src={HackerRank} alt="Custom Icon" sx={{ width: 22, height: 22 }} />} href="###https://www.hackerrank.com/dashboard">Hcker Rank</Button>
+              <Button variant="outline" startIcon={<MailIcon/>} href="vikeshkm@gmail.com">Email</Button>
+              <Button variant="outline" startIcon={<PhoneInTalkIcon/>} href="+91 9565649703">Phone</Button>
+              <Button variant="outline" startIcon={<GitHubIcon/>} href="https://github.com/vikeshvrmcse">Github</Button>
+              <Button variant="outline" startIcon={<LinkedInIcon/>} href="https://www.linkedin.com/in/vikesh-kumar-verma-691a45218/">Linkdin</Button>
+              <Button variant="outline" startIcon={<Avatar src={HackerRank} alt="Custom Icon" sx={{ width: 22, height: 22 }} />} href="https://www.hackerrank.com/dashboard">Hcker Rank</Button>
             </Stack>
           </Grid>
         </Grid>

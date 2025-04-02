@@ -24,93 +24,93 @@ export default function Quize() {
     return (
         <>
             <Stack justifyContent="center" alignItems="center" width="100%" sx={{ marginBottom: 4 }} >
-                {/* Top Navigation Buttons */}
+                
                 <Grid container spacing={2} justifyContent="center" alignItems="center" p={0} sx={{ width: "80%",  mb: 2 }}>
                     <Grid  item lg={12} m={0}>
                         <Box sx={{ mt: 2, p: 2, mb: 2, backgroundColor: '#113946' }}>
-                            <Typography variant="h4" color="secondary" align="center">Save Quizes Details</Typography>
+                            <Typography variant="h4" color="secondary" align="center">Contact us</Typography>
                         </Box>
                     </Grid>
                 </Grid>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Card sx={{ width: '80%', p: 2, boxShadow: 3, mx: 'auto' }}>
-                        <CardHeader title="Quize Form" />
+                        <CardHeader title="Fill and press send message" />
                         <CardContent>
                             <Grid container spacing={2}>
-                                {/* Question Field */}
+                                
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Question Description"
+                                        label="Enter phone number"
                                         type="text"
-                                        {...register('question', { required: 'Question is required' })}
+                                        {...register('question', { required: 'Phone is required' })}
                                         error={!!errors.question}
                                         helperText={errors.question?.message}
                                     />
                                 </Grid>
 
-                                {/* Option A Field */}
+                                
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Option A"
+                                        label="First problem"
                                         type="text"
                                         {...register('optiona', {
-                                            required: 'Option a is required',
+                                            required: 'Problem first is required',
                                             pattern: {
                                                 value: /^[a-zA-Z0-9._%+-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                                message: 'Enter a valid email'
+                                                message: 'Enter problem first'
                                             }
                                         })}
                                         error={!!errors.optiona}
                                         helperText={errors.optiona?.message}
                                     />
                                 </Grid>
-                                {/* Option B Field */}
+                                
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Option B"
+                                        label="Second problem"
                                         type="text"
                                         {...register('optionb', {
-                                            required: 'Option b is required',
+                                            required: 'Second problem optional',
                                             pattern: {
                                                 value: /^[a-zA-Z0-9._%+-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                                message: 'Enter a valid option'
+                                                message: 'Enter a valid problem'
                                             }
                                         })}
                                         error={!!errors.optionb}
                                         helperText={errors.optionb?.message}
                                     />
                                 </Grid>
-                                {/* Option C Field */}
+                                
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Option C"
+                                        label="Second problem"
                                         type="text"
                                         {...register('optionc', {
-                                            required: 'Option c is required',
+                                            required: 'Third problem optional',
                                             pattern: {
                                                 value: /^[a-zA-Z0-9._%+-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                                message: 'Enter a valid option'
+                                                message: 'Enter third problem'
                                             }
                                         })}
                                         error={!!errors.optionc}
                                         helperText={errors.optionc?.message}
                                     />
                                 </Grid>
-                                {/* Option D Field */}
+                                
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Option D"
+                                        label="Fourth problem"
                                         type="text"
                                         {...register('optiond', {
-                                            required: 'Option d is required',
+                                            required: 'Fourth problem optional',
                                             pattern: {
                                                 value: /^[a-zA-Z0-9._%+-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                                message: 'Enter a valid option'
+                                                message: 'Enter fourth problem'
                                             }
                                         })}
                                         error={!!errors.optiond}
@@ -118,12 +118,12 @@ export default function Quize() {
                                     />
                                 </Grid>
 
-                                {/* Question duration Field */}
+                                
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Question duration"
-                                        type="number"
+                                        label="Select time"
+                                        type="time"
                                         {...register('time', { required: 'Time is required' })}
                                         error={!!errors.time}
                                         helperText={errors.time?.message}
@@ -132,12 +132,12 @@ export default function Quize() {
 
 
 
-                                {/* Buttons */}
+                          
                                 <Grid item xs={12}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={6}>
                                             <Button fullWidth variant="contained" color="primary" type="submit" onClick={() => setCondition('Registration')}>
-                                                Save
+                                                Send Me
                                             </Button>
                                         </Grid>
                                         <Grid item xs={6}>
