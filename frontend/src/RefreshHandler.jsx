@@ -6,16 +6,14 @@ const RefreshHandler = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (localStorage.getItem("token")) {
-            setIsAuthenticated(true);
+        const token = localStorage.getItem("token");
 
-            if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
-                navigate("/", { replace: false });
-            }
+        if (token) {
+            setIsAuthenticated(true);
         } else {
-            
-            console.log("Redirecting to *");
-            navigate("*", { replace: true }); 
+            if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
+                navigate("*", { replace: true });
+            }
         }
     }, [location.pathname, navigate, setIsAuthenticated]);
 
