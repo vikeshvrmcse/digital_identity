@@ -13,8 +13,12 @@ const RefreshHandler = ({ setIsAuthenticated }) => {
         } else {
             setIsAuthenticated(false);
 
-    
-            if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
+            const protectedRoutes = [
+                "/contact", "/blog", "/standardquiz", "/quizdashboard",
+                "/blogdashboard", "/quizes/", "/blogs/"
+            ];
+            
+            if (protectedRoutes.some(route => location.pathname.startsWith(route))) {
                 navigate("/", { replace: true });
             }
         }

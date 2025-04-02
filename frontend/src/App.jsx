@@ -7,7 +7,7 @@ import About from "./About";
 import Contact from "./Contact";
 import Blogs from "./Blogs";
 import BlogDashboard from "./BlogDashboard";
-import CustomThemeProvider from "./CustomThemeProvider"; // Import ThemeProvider
+import CustomThemeProvider from "./CustomThemeProvider"; 
 import { ContextProvider } from "./GlobalContext";
 import StandardQuizes from "./StandardQuizes";
 import QuizDashboard from "./QuizDashboard";
@@ -21,8 +21,8 @@ import NotFound from "./NotFound";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Private Route Handler
-  const PrivateRouting = ({ element }) => {
+  // Private Route Component
+  const PrivateRoute = ({ element }) => {
     return isAuthenticated ? element : <Navigate to="/" replace />;
   };
 
@@ -33,30 +33,23 @@ function App() {
           <Navbar />
           <RefreshHandler setIsAuthenticated={setIsAuthenticated} />
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/standardquiz" element={<StandardQuizes />} />
-            <Route path="/blog" element={<Blogs />} />
 
-            {/* Protected Routes */}
-            <Route 
-              path="/quizdashboard" 
-              element={<PrivateRouting element={<QuizDashboard />} />} 
-            />
-            <Route 
-              path="/blogdashboard" 
-              element={<PrivateRouting element={<BlogDashboard />} />} 
-            />
+            {/* Protected Routes (Require Login) */}
+            <Route path="/contact" element={<PrivateRoute element={<Contact />} />} />
+            <Route path="/blog" element={<PrivateRoute element={<Blogs />} />} />
+            <Route path="/standardquiz" element={<PrivateRoute element={<StandardQuizes />} />} />
+            <Route path="/quizdashboard" element={<PrivateRoute element={<QuizDashboard />} />} />
+            <Route path="/blogdashboard" element={<PrivateRoute element={<BlogDashboard />} />} />
+            <Route path="/quizes/:quizId" element={<PrivateRoute element={<QuizView />} />} />
+            <Route path="/quizes/edit/:quizId" element={<PrivateRoute element={<QuizEdit />} />} />
+            <Route path="/blogs/view/:blogId" element={<PrivateRoute element={<BlogViewEdit />} />} />
+            <Route path="/blogs/edit/:blogId" element={<PrivateRoute element={<BlogViewEdit />} />} />
 
-            {/* Quiz & Blog Routes */}
-            <Route path="/quizes/:quizId" element={<QuizView />} />
-            <Route path="/quizes/edit/:quizId" element={<QuizEdit />} />
-            <Route path="/blogs/view/:blogId" element={<BlogViewEdit />} />
-            <Route path="/blogs/edit/:blogId" element={<BlogViewEdit />} />
-
-            {/* 404 Handling */}
+            {/* 404 Page */}
             <Route path="/notfound" element={<NotFound />} />
             <Route path="*" element={<Navigate to="/notfound" replace />} />
           </Routes>
