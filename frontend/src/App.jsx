@@ -19,36 +19,48 @@ import RefreshHandler from "./RefreshHandler";
 import NotFound from "./NotFound";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated]=useState(false);
-  const PrivateRouting = ({ element, isAuthenticated }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Private Route Handler
+  const PrivateRouting = ({ element }) => {
     return isAuthenticated ? element : <Navigate to="/" replace />;
   };
 
   return (
     <CustomThemeProvider>
       <ContextProvider>
-      <Router>
-        <Navbar />
-        <RefreshHandler setIsAuthenticated={setIsAuthenticated} />
-        <Routes>
-          <Route path="/" element={<PrivateRouting element={<Home />}/>} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/standardquiz" element={<StandardQuizes />} />
-          <Route path="/quizdashboard" element={<QuizDashboard />} />
-          <Route path="/blog" element={<Blogs />} />
-          <Route path="/blogdashboard" element={<BlogDashboard />} />
-          <Route path="/quizes/:quizId" element={<QuizView />} />
-          <Route path="/quizes/edit/:quizId" element={<QuizEdit />} />
-          <Route path="/blogs/view/:blogId" element={<BlogViewEdit />} />
-          <Route path="/blogs/edit/:blogId" element={<BlogViewEdit />} />
-          <Route path="/notfound" element={<NotFound />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        
-      </Router>
-      
+        <Router>
+          <Navbar />
+          <RefreshHandler setIsAuthenticated={setIsAuthenticated} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/standardquiz" element={<StandardQuizes />} />
+            <Route path="/blog" element={<Blogs />} />
+
+            {/* Protected Routes */}
+            <Route 
+              path="/quizdashboard" 
+              element={<PrivateRouting element={<QuizDashboard />} />} 
+            />
+            <Route 
+              path="/blogdashboard" 
+              element={<PrivateRouting element={<BlogDashboard />} />} 
+            />
+
+            {/* Quiz & Blog Routes */}
+            <Route path="/quizes/:quizId" element={<QuizView />} />
+            <Route path="/quizes/edit/:quizId" element={<QuizEdit />} />
+            <Route path="/blogs/view/:blogId" element={<BlogViewEdit />} />
+            <Route path="/blogs/edit/:blogId" element={<BlogViewEdit />} />
+
+            {/* 404 Handling */}
+            <Route path="/notfound" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/notfound" replace />} />
+          </Routes>
+        </Router>
       </ContextProvider>
     </CustomThemeProvider>
   );

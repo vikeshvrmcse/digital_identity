@@ -11,7 +11,9 @@ const RefreshHandler = ({ setIsAuthenticated }) => {
         if (token) {
             setIsAuthenticated(true);
         } else {
-            // Redirect unauthorized users to home instead of "/notfound"
+            setIsAuthenticated(false);
+
+    
             if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
                 navigate("/", { replace: true });
             }
