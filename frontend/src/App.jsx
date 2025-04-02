@@ -20,9 +20,10 @@ import NotFound from "./NotFound";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated]=useState(false);
-  const PrivateRouting=({element})=>{
-    return isAuthenticated? element:<Navigate to="/"/>
-  }
+  const PrivateRouting = ({ element, isAuthenticated }) => {
+    return isAuthenticated ? element : <Navigate to="/" replace />;
+  };
+
   return (
     <CustomThemeProvider>
       <ContextProvider>

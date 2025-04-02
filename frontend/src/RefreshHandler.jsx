@@ -1,9 +1,9 @@
-import { Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const PrivateRouting = ({ element }) => {
-    const [loading, setLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+const RefreshHandler = ({ setIsAuthenticated }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -11,15 +11,14 @@ const PrivateRouting = ({ element }) => {
         if (token) {
             setIsAuthenticated(true);
         } else {
-            setIsAuthenticated(false);
+            // Redirect unauthorized users to home instead of "/notfound"
+            if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
+                navigate("/", { replace: true });
+            }
         }
-        
-        setLoading(false);
-    }, []);
+    }, [location.pathname, navigate, setIsAuthenticated]);
 
-    if (loading) return <p>Loading...</p>;
-
-    return isAuthenticated ? element : <Navigate to="/" />;
+    return null;
 };
 
-export default PrivateRouting;
+export default RefreshHandler;
