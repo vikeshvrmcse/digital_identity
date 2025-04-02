@@ -6,16 +6,15 @@ const RefreshHandler = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (localStorage.getItem("token")) {
-            setIsAuthenticated(true);
+        const token = localStorage.getItem("token");
 
-            // Corrected route checking
-            // if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
-            //     navigate("/", { replace: false });
-            // }
+        if (token) {
+            setIsAuthenticated(true);
         } else {
-            // Redirect to 404 page if an invalid route is accessed
-            navigate("/notfound", { replace: true });
+            // Redirect unauthenticated users trying to access protected routes
+            if (location.pathname === "/blogdashboard" || location.pathname === "/quizdashboard") {
+                navigate("/notfound", { replace: true });
+            }
         }
     }, [location.pathname, navigate, setIsAuthenticated]);
 
