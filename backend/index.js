@@ -9,7 +9,7 @@ const productRouter=require('./Routes/products')
 const quizRouter = require('./Routes/quizeroutes')
 const blogRouter = require('./Routes/blogroutes')
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 const PORT=8000 || process.env.PORT
 
 

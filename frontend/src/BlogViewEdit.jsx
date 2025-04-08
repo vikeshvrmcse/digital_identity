@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Typography, Paper, Button, TextField } from "@mui/material";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import { handleSuccess, handleError } from "./Utils";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 const BlogViewEdit = () => {
   const location = useLocation();
@@ -24,13 +26,16 @@ const BlogViewEdit = () => {
         headers: { "Content-Type": "application/json", Authorization: `${token}` },
       });
       setIsEdit(false);
+      handleSuccess("Updated successfully")
     } catch (error) {
+      handleError("Error updating blog:", error.message)
       console.error("Error updating blog:", error);
     }
   };
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
+      <ToastContainer/>
       <Paper elevation={3} sx={{ p: 3 }}>
         {isEdit ? (
           <>
